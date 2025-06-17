@@ -15,13 +15,10 @@ const AppNavbar = () => {
   const authLinks = (
     <>
       <Nav className="me-auto">
-        {user && user.role === 'admin' && (
-          <Button as={Link} to="/communities/create" variant="outline-primary" className="me-2" size="sm">Create Community</Button>
-        )}
       </Nav>
-      <Nav>
+      <Nav style={{ marginRight: '1rem' }}>
         <NavDropdown title={user ? (
-          <span className="navbar-text me-3" style={{ marginRight: '2rem', fontSize: '1.1rem', fontWeight: '500' }}>
+          <span className="navbar-text" style={{ fontSize: '1.1rem', fontWeight: '500' }}>
             Welcome, {user.name}
           </span>
         ) : 'Account'} id="basic-nav-dropdown">
@@ -29,13 +26,32 @@ const AppNavbar = () => {
           <NavDropdown.Divider />
           <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
         </NavDropdown>
+        {user && user.role === 'admin' && (
+          <Button 
+            as={Link} 
+            to="/communities/create" 
+            size="sm"
+            style={{ 
+              backgroundColor: '#4a154b',
+              borderColor: '#4a154b',
+              color: 'white',
+              padding: '0.3rem 1rem',
+              height: '36px',
+              display: 'flex',
+              alignItems: 'center',
+              marginLeft: '1rem'
+            }}
+          >
+            Create Community
+          </Button>
+        )}
       </Nav>
     </>
   );
 
   const guestLinks = (
-    <Nav className="ms-auto">
-      <Button as={Link} to="/login" variant="outline-primary" className="me-2" size="sm">Login</Button>
+    <Nav className="ms-auto" style={{ marginRight: '-8rem' }}>
+      <Button as={Link} to="/login" variant="outline-primary" className="me-4" size="sm">Login</Button>
       <Button as={Link} to="/register" variant="primary" size="sm">Register</Button>
     </Nav>
   );
@@ -43,7 +59,7 @@ const AppNavbar = () => {
   return (
     <Navbar bg="white" expand="lg" className="shadow-sm fixed-top">
       <Container>
-        <Navbar.Brand as={Link} to="/" className="text-primary" style={{ marginLeft: '-6rem', fontSize: '1.2rem' }}>
+        <Navbar.Brand as={Link} to="/" className="text-primary" style={{ fontSize: '1.2rem' }}>
           <i className="fas fa-book-reader me-2"></i>
           ShikshaHub
         </Navbar.Brand>
@@ -62,4 +78,4 @@ const AppNavbar = () => {
   );
 };
 
-export default AppNavbar; 
+export default AppNavbar;
