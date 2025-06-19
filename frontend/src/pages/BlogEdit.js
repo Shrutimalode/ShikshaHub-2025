@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Button, Spinner, Alert } from 'react-bootstrap';
-import axios from 'axios';
+import api from '../api';
 import { useAuth } from '../contexts/AuthContext';
 import BlogForm from '../components/BlogForm';
 
@@ -19,7 +19,7 @@ const BlogEdit = () => {
   useEffect(() => {
     const fetchBlogDetails = async () => {
       try {
-        const res = await axios.get(`/api/blogs/${blogId}`);
+        const res = await api.get(`/api/blogs/${blogId}`);
         
         // Check if user is the author
         if (res.data.author._id !== user.id) {
@@ -52,7 +52,7 @@ const BlogEdit = () => {
     setSubmitting(true);
     
     try {
-      const res = await axios.put(`/api/blogs/${blogId}`, formData);
+      const res = await api.put(`/api/blogs/${blogId}`, formData);
       navigate(`/communities/${communityId}/blogs/${blogId}`);
     } catch (error) {
       console.error('Error updating blog post:', error);

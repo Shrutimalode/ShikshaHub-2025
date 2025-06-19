@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Form, Button, Card, Alert, Spinner, Container } from 'react-bootstrap';
-import axios from 'axios';
+import api from '../api';
 
 const BlogCreate = () => {
   const { communityId } = useParams();
@@ -25,7 +25,7 @@ const BlogCreate = () => {
     setError('');
     setSuccess('');
     try {
-      const res = await axios.post('/api/blogs', {
+      const res = await api.post('/api/blogs', {
         title: form.title,
         content: form.content,
         tags: form.tags,

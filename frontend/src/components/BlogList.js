@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ListGroup, Badge, Button, Card, Form, Row, Col, Alert, Modal, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import axios from 'axios';
+import api from '../api';
 
 const BlogList = ({ blogs, communityId, isAdmin, onDelete, onReview }) => {
   const { user } = useAuth();
@@ -51,7 +51,7 @@ const BlogList = ({ blogs, communityId, isAdmin, onDelete, onReview }) => {
     setSearchError('');
     
     try {
-      const res = await axios.get(`/api/blogs/search/${communityId}`, {
+      const res = await api.get(`/api/blogs/search/${communityId}`, {
         params: { keyword }
       });
       

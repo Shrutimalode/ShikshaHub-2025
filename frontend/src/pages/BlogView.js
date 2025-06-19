@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Button, Spinner, Alert } from 'react-bootstrap';
-import axios from 'axios';
+import api from '../api';
 import { useAuth } from '../contexts/AuthContext';
 import BlogDetail from '../components/BlogDetail';
 
@@ -22,7 +22,7 @@ const BlogView = () => {
   useEffect(() => {
     const fetchBlogDetails = async () => {
       try {
-        const res = await axios.get(`/api/blogs/${blogId}`);
+        const res = await api.get(`/api/blogs/${blogId}`);
         setBlog(res.data);
       } catch (error) {
         console.error('Error fetching blog details:', error);
@@ -48,7 +48,7 @@ const BlogView = () => {
   const handleDeleteBlog = async () => {
     if (window.confirm('Are you sure you want to delete this blog post?')) {
       try {
-        await axios.delete(`/api/blogs/${blogId}`);
+        await api.delete(`/api/blogs/${blogId}`);
         navigate(`/communities/${communityId}`);
       } catch (error) {
         alert('Failed to delete blog post. Please try again.');
@@ -65,7 +65,7 @@ const BlogView = () => {
     }
     
     try {
-      await axios.put(`/api/blogs/review/${blogId}`, {
+      await api.put(`/api/blogs/review/${blogId}`, {
         status: showReviewModal,
         reviewComment
       });
@@ -90,7 +90,7 @@ const BlogView = () => {
   // Handle blog resubmission
   const handleResubmit = async () => {
     try {
-      const res = await axios.put(`/api/blogs/resubmit/${blogId}`);
+      const res = await api.put(`/api/blogs/resubmit/${blogId}`);
       
       // Update blog status
       setBlog({

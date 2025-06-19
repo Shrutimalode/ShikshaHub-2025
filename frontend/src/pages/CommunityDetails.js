@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Container, Row, Col, Card, Button, Tab, Nav, Form, Badge, Alert, Spinner, ListGroup, Modal, InputGroup } from 'react-bootstrap';
-import axios from 'axios';
+import api from '../api';
 import { useAuth } from '../contexts/AuthContext';
 import BlogList from '../components/BlogList';
 import BlogForm from '../components/BlogForm';
@@ -65,7 +65,7 @@ const CommunityDetails = () => {
       try {
         console.log('Fetching community details for ID:', id);
         console.log('Current user:', user);
-        const res = await axios.get(`/api/communities/${id}`);
+        const res = await api.get(`/api/communities/${id}`);
         console.log('Community details response:', res.data);
         setCommunity(res.data);
         
@@ -82,7 +82,7 @@ const CommunityDetails = () => {
         }
         
         // Also fetch materials
-        const materialsRes = await axios.get(`/api/materials/community/${id}`);
+        const materialsRes = await api.get(`/api/materials/community/${id}`);
         console.log('Materials response:', materialsRes.data);
         setMaterials(materialsRes.data);
         
@@ -125,7 +125,7 @@ const CommunityDetails = () => {
     setBlogError('');
     
     try {
-      const res = await axios.get(`/api/blogs/community/${id}`);
+      const res = await api.get(`/api/blogs/community/${id}`);
       setBlogs(res.data);
     } catch (error) {
       console.error('Error fetching blogs:', error);
@@ -138,7 +138,7 @@ const CommunityDetails = () => {
   // Fetch events
   const fetchEvents = async () => {
     try {
-      const res = await axios.get(`/api/communities/${id}/events`);
+      const res = await api.get(`/api/communities/${id}/events`);
       setEvents(res.data);
     } catch (error) {
       console.error('Error fetching events:', error);
@@ -159,7 +159,7 @@ const CommunityDetails = () => {
       setLoadingRequests(true);
       
       try {
-        const res = await axios.get(`/api/communities/${id}/requests`);
+        const res = await api.get(`/api/communities/${id}/requests`);
         setJoinRequests(res.data);
       } catch (error) {
         console.error('Error fetching join requests:', error);
@@ -208,7 +208,7 @@ const CommunityDetails = () => {
       formData.append('tags', uploadForm.tags);
       formData.append('file', uploadForm.file);
       
-      const res = await axios.post('/api/materials', formData, {
+      const res = await api.post('/api/materials', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -242,7 +242,7 @@ const CommunityDetails = () => {
   const handleDeleteMaterial = async (materialId) => {
     if (window.confirm('Are you sure you want to delete this material?')) {
       try {
-        await axios.delete(`/api/materials/${materialId}`);
+        await api.delete(`/api/materials/${materialId}`);
         
         // Remove material from list
         setMaterials(materials.filter(material => material._id !== materialId));
@@ -258,7 +258,7 @@ const CommunityDetails = () => {
     try {
       console.log('Debug: User object in handleDownloadMaterial:', user);
       console.log('Debug: Token being sent for download:', token);
-      const res = await axios.get(`/api/materials/download/${materialId}`, {
+      const res = await api.get(`/api/materials/download/${materialId}`, {
         responseType: 'blob', // Important for downloading files
         headers: {
           'x-auth-token': token
@@ -304,7 +304,7 @@ const CommunityDetails = () => {
     setRequestMessage('');
     
     try {
-      const res = await axios.post('/api/communities/request', {
+      const res = await api.post('/api/communities/request', {
         communityId: id
       });
       
@@ -321,7 +321,7 @@ const CommunityDetails = () => {
   // Handle join request response (approve/reject)
   const handleJoinRequestResponse = async (userId, status) => {
     try {
-      await axios.put('/api/communities/request/handle', {
+      await api.put('/api/communities/request/handle', {
         communityId: id,
         userId,
         status
@@ -360,7 +360,7 @@ const CommunityDetails = () => {
   const handleDeleteBlog = async (blogId) => {
     if (window.confirm('Are you sure you want to delete this blog post?')) {
       try {
-        await axios.delete(`/api/blogs/${blogId}`);
+        await api.delete(`/api/blogs/${blogId}`);
         
         // Remove blog from list
         setBlogs(blogs.filter(blog => blog._id !== blogId));
@@ -374,7 +374,7 @@ const CommunityDetails = () => {
   // Handle blog review
   const handleReviewBlog = async (blogId, status, feedback) => {
     try {
-      await axios.put(`/api/blogs/review/${blogId}`, {
+      await api.put(`/api/blogs/review/${blogId}`, {
         status,
         reviewComment: feedback
       });
@@ -397,7 +397,7 @@ const CommunityDetails = () => {
     setRemoveLoading(true);
     
     try {
-      await axios.put('/api/communities/members/remove', {
+      await api.put('/api/communities/members/remove', {
         communityId: id,
         userId: memberToRemove._id,
         role: memberToRemove.role
@@ -429,7 +429,7 @@ const CommunityDetails = () => {
   const handleDeleteCommunity = async () => {
     if (window.confirm('Are you sure you want to delete this community? This action cannot be undone.')) {
       try {
-        await axios.delete(`/api/communities/${id}`);
+        await api.delete(`/api/communities/${id}`);
         navigate('/dashboard');
       } catch (error) {
         alert('Failed to delete community. Please try again.');
@@ -480,7 +480,7 @@ const CommunityDetails = () => {
     setEventSuccess('');
 
     try {
-      const res = await axios.post(`/api/communities/${id}/events`, eventForm);
+      const res = await api.post(`/api/communities/${id}/events`, eventForm);
       setEvents([res.data, ...events]); // Add new event to the list
       setEventSuccess('Event created successfully!');
       setEventForm({

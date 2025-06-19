@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 import { Button, Modal } from 'react-bootstrap';
 
 const BlogSummary = ({ blogContent }) => {
@@ -15,7 +15,7 @@ const BlogSummary = ({ blogContent }) => {
     try {
       setLoading(true);
       setError('');
-      const response = await axios.post('/api/blogs/summarize', {
+      const response = await api.post('/api/blogs/summarize', {
         content: blogContent
       });
       setSummary(response.data.summary);

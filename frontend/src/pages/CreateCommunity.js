@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Card, Form, Button, Alert, Spinner } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import { useAuth } from '../contexts/AuthContext';
 
 const CreateCommunity = () => {
@@ -44,7 +44,7 @@ const CreateCommunity = () => {
       }
 
       // Create community
-      const res = await axios.post('/api/communities', formData);
+      const res = await api.post('/api/communities', formData);
       
       // Redirect to the new community
       navigate(`/communities/${res.data._id}`);

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api';
 
 // Create auth context
 const AuthContext = createContext();
@@ -17,9 +17,9 @@ export const AuthProvider = ({ children }) => {
   // Set axios default headers
   useEffect(() => {
     if (token) {
-      axios.defaults.headers.common['x-auth-token'] = token;
+      api.defaults.headers.common['x-auth-token'] = token;
     } else {
-      delete axios.defaults.headers.common['x-auth-token'];
+      delete api.defaults.headers.common['x-auth-token'];
     }
   }, [token]);
 
@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
     const loadUser = async () => {
       if (token) {
         try {
-          const res = await axios.get('/api/auth/me');
+          const res = await api.get('/api/auth/me');
           setUser({
             ...res.data,
             id: res.data._id
@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }) => {
   // Register user
   const register = async (formData) => {
     try {
-      const res = await axios.post('/api/auth/register', formData);
+      const res = await api.post('/api/auth/register', formData);
       
       localStorage.setItem('token', res.data.token);
       setToken(res.data.token);
@@ -72,7 +72,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (formData) => {
     try {
       console.log('Login attempt:', { email: formData.email, role: formData.role });
-      const res = await axios.post('/api/auth/login', formData);
+      const res = await api.post('/api/auth/login', formData);
       console.log('Login successful:', res.data);
       
       localStorage.setItem('token', res.data.token);
@@ -97,7 +97,7 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
     setUser(null);
     setIsAuthenticated(false);
-    delete axios.defaults.headers.common['x-auth-token'];
+    delete api.defaults.headers.common['x-auth-token'];
   };
 
   return (

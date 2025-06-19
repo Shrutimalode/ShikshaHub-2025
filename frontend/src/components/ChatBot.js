@@ -1,9 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api';
 import './ChatBot.css';
-
-// Configure axios base URL
-axios.defaults.baseURL = 'http://localhost:5000';
 
 const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +26,7 @@ const ChatBot = () => {
 
     try {
       console.log('Sending message to backend:', userMessage);
-      const response = await axios.post('/api/chat', {
+      const response = await api.post('/api/chat', {
         message: userMessage
       });
       console.log('Received response from backend:', response.data);
