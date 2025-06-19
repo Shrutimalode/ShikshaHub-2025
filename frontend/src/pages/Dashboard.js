@@ -192,7 +192,8 @@ const Dashboard = () => {
     <Container>
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2>Dashboard</h2>
-        <div>
+        <div className="d-flex align-items-center">
+         
           <Badge 
             bg={getRoleBadgeVariant(user?.role)} 
             className="me-2"

@@ -40,7 +40,8 @@ const BlogDetail = ({
   };
   
   const canEdit = () => {
-    return blog.author._id === user.id;
+    // Only allow editing if user is the author AND blog is not pending
+    return blog.author._id === user.id && blog.status !== 'pending';
   };
   
   const canReview = () => {

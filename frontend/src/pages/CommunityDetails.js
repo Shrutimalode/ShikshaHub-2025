@@ -598,13 +598,13 @@ const CommunityDetails = () => {
               <Tab.Container id="community-tabs" activeKey={activeTab} onSelect={k => setActiveTab(k)}>
                 <Nav variant="tabs" className="mb-3">
                   <Nav.Item>
+                    <Nav.Link eventKey="members">Members</Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
                     <Nav.Link eventKey="materials">Materials</Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
                     <Nav.Link eventKey="blogs">Blogs</Nav.Link>
-                  </Nav.Item>
-                  <Nav.Item>
-                    <Nav.Link eventKey="members">Members</Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
                     <Nav.Link eventKey="events">Events</Nav.Link>
@@ -619,6 +619,92 @@ const CommunityDetails = () => {
                 </Nav>
                 
                 <Tab.Content>
+                  <Tab.Pane eventKey="members">
+                    <Row>
+                      <Col md={4}>
+                        <Card className="mb-3">
+                          <Card.Body>
+                            <Card.Title>Admin</Card.Title>
+                            <ListGroup variant="flush">
+                              <ListGroup.Item>
+                                <i className="fas fa-user-shield me-2"></i>
+                                {community.admin?.name || 'Admin'}
+                              </ListGroup.Item>
+                            </ListGroup>
+                          </Card.Body>
+                        </Card>
+                      </Col>
+                      
+                      <Col md={4}>
+                        <Card className="mb-3">
+                          <Card.Body>
+                            <Card.Title>Teachers</Card.Title>
+                            {community.teachers?.length > 0 ? (
+                              <ListGroup variant="flush">
+                                {community.teachers.map(teacher => (
+                                  <ListGroup.Item 
+                                    key={teacher._id}
+                                    className="d-flex justify-content-between align-items-center"
+                                  >
+                                    <span>
+                                      <i className="fas fa-chalkboard-teacher me-2"></i>
+                                      {teacher.name}
+                                    </span>
+                                    {isAdmin && (
+                                      <Button 
+                                        variant="outline-danger" 
+                                        size="sm"
+                                        onClick={() => openRemoveModal(teacher, 'teacher')}
+                                      >
+                                        <i className="fas fa-user-minus"></i>
+                                      </Button>
+                                    )}
+                                  </ListGroup.Item>
+                                ))}
+                              </ListGroup>
+                            ) : (
+                              <p className="text-muted small">No teachers have joined yet</p>
+                            )}
+                          </Card.Body>
+                        </Card>
+                      </Col>
+                      
+                      <Col md={4}>
+                        <Card>
+                          <Card.Body>
+                            <Card.Title>Students</Card.Title>
+                            {community.students?.length > 0 ? (
+                              <ListGroup variant="flush" style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                                {community.students.map(student => (
+                                  <ListGroup.Item 
+                                    key={student._id}
+                                    className="d-flex justify-content-between align-items-center"
+                                  >
+                                    <span>
+                                      <i className="fas fa-user-graduate me-2"></i>
+                                      {student.name}
+                                    </span>
+                                    {isAdmin && (
+                                      <Button 
+                                        variant="outline-danger" 
+                                        size="sm"
+                                        onClick={() => openRemoveModal(student, 'student')}
+                                      >
+                                        <i className="fas fa-user-minus"></i>
+                                      </Button>
+                                    )}
+                                  </ListGroup.Item>
+                                ))}
+                              </ListGroup>
+                            ) : (
+                              <p className="text-muted small">No students have joined yet</p>
+                            )}
+                          </Card.Body>
+                        </Card>
+                      </Col>
+                    </Row>
+                  </Tab.Pane>
+                  
                   <Tab.Pane eventKey="materials">
                     {materials.length === 0 ? (
                       <Alert variant="info">
@@ -706,92 +792,6 @@ const CommunityDetails = () => {
                         onReview={(blogId, status, feedback) => handleReviewBlog(blogId, status, feedback)}
                       />
                     )}
-                  </Tab.Pane>
-                  
-                  <Tab.Pane eventKey="members">
-                    <Row>
-                      <Col md={4}>
-                        <Card className="mb-3">
-                          <Card.Body>
-                            <Card.Title>Admin</Card.Title>
-                            <ListGroup variant="flush">
-                              <ListGroup.Item>
-                                <i className="fas fa-user-shield me-2"></i>
-                                {community.admin?.name || 'Admin'}
-                              </ListGroup.Item>
-                            </ListGroup>
-                          </Card.Body>
-                        </Card>
-                      </Col>
-                      
-                      <Col md={4}>
-                        <Card className="mb-3">
-                          <Card.Body>
-                            <Card.Title>Teachers</Card.Title>
-                            {community.teachers?.length > 0 ? (
-                              <ListGroup variant="flush">
-                                {community.teachers.map(teacher => (
-                                  <ListGroup.Item 
-                                    key={teacher._id}
-                                    className="d-flex justify-content-between align-items-center"
-                                  >
-                                    <span>
-                                      <i className="fas fa-chalkboard-teacher me-2"></i>
-                                      {teacher.name}
-                                    </span>
-                                    {isAdmin && (
-                                      <Button 
-                                        variant="outline-danger" 
-                                        size="sm"
-                                        onClick={() => openRemoveModal(teacher, 'teacher')}
-                                      >
-                                        <i className="fas fa-user-minus"></i>
-                                      </Button>
-                                    )}
-                                  </ListGroup.Item>
-                                ))}
-                              </ListGroup>
-                            ) : (
-                              <p className="text-muted small">No teachers have joined yet</p>
-                            )}
-                          </Card.Body>
-                        </Card>
-                      </Col>
-                      
-                      <Col md={4}>
-                        <Card>
-                          <Card.Body>
-                            <Card.Title>Students</Card.Title>
-                            {community.students?.length > 0 ? (
-                              <ListGroup variant="flush" style={{ maxHeight: '300px', overflowY: 'auto' }}>
-                                {community.students.map(student => (
-                                  <ListGroup.Item 
-                                    key={student._id}
-                                    className="d-flex justify-content-between align-items-center"
-                                  >
-                                    <span>
-                                      <i className="fas fa-user-graduate me-2"></i>
-                                      {student.name}
-                                    </span>
-                                    {isAdmin && (
-                                      <Button 
-                                        variant="outline-danger" 
-                                        size="sm"
-                                        onClick={() => openRemoveModal(student, 'student')}
-                                      >
-                                        <i className="fas fa-user-minus"></i>
-                                      </Button>
-                                    )}
-                                  </ListGroup.Item>
-                                ))}
-                              </ListGroup>
-                            ) : (
-                              <p className="text-muted small">No students have joined yet</p>
-                            )}
-                          </Card.Body>
-                        </Card>
-                      </Col>
-                    </Row>
                   </Tab.Pane>
                   
                   <Tab.Pane eventKey="events">

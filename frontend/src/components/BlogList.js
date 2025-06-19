@@ -72,9 +72,7 @@ const BlogList = ({ blogs, communityId, isAdmin, onDelete, onReview }) => {
       setSearchError('Failed to search blogs');
       // Fall back to local filtering
       let filtered = blogs.filter(blog => 
-        blog.title.toLowerCase().includes(keyword.toLowerCase()) ||
-        blog.content.toLowerCase().includes(keyword.toLowerCase()) ||
-        (blog.tags && blog.tags.some(tag => tag.toLowerCase().includes(keyword.toLowerCase())))
+        blog.tags && blog.tags.some(tag => tag.toLowerCase().includes(keyword.toLowerCase()))
       );
       setFilteredBlogs(filtered);
     } finally {
@@ -143,7 +141,8 @@ const BlogList = ({ blogs, communityId, isAdmin, onDelete, onReview }) => {
   };
 
   const canEdit = (blog) => {
-    return blog.author._id === user.id;
+    // Only allow editing if user is the author AND blog is not pending
+    return blog.author._id === user.id && blog.status !== 'pending';
   };
 
   const canReview = (blog) => {
@@ -166,7 +165,7 @@ const BlogList = ({ blogs, communityId, isAdmin, onDelete, onReview }) => {
         <Col md={6}>
           <Form.Control
             type="text"
-            placeholder="Search blogs..."
+            placeholder="Search by tags..."
             value={searchTerm}
             onChange={handleSearchChange}
           />
@@ -260,23 +259,6 @@ const BlogList = ({ blogs, communityId, isAdmin, onDelete, onReview }) => {
                           Read
                         </Button>
                       </Link>
-                      
-                      {canEdit(blog) && (
-                        <>
-                          <Link to={`/communities/${communityId}/blogs/${blog._id}/edit`} className="me-2">
-                            <Button variant="outline-secondary" size="sm">
-                              Edit
-                            </Button>
-                          </Link>
-                          <Button 
-                            variant="outline-danger" 
-                            size="sm"
-                            onClick={() => onDelete(blog._id)}
-                          >
-                            Delete
-                          </Button>
-                        </>
-                      )}
                       
                       {(blog.status === 'pending' && canReview(blog)) && (
                         <div className="ms-2 d-flex">

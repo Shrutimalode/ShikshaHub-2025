@@ -20,6 +20,7 @@ ShikshaHub is a comprehensive educational platform that connects students, teach
 - **Bcryptjs** (v2.4.3) - Password hashing
 - **Multer** (v1.4.3) - File upload handling
 - **Google Generative AI** (v0.24.1) - AI integration
+- **Nodemailer** - Email functionality
 - **CORS** (v2.8.5) - Cross-origin resource sharing
 - **Dotenv** (v10.0.0) - Environment variable management
 
@@ -34,6 +35,7 @@ ShikshaHub is a comprehensive educational platform that connects students, teach
 - User registration and login
 - JWT-based authentication
 - Password hashing and security
+- **Welcome email notifications** for new registrations
 
 ### Communities (`/api/communities`)
 - Create and manage learning communities
@@ -62,13 +64,33 @@ ShikshaHub is a comprehensive educational platform that connects students, teach
 
 ## Features
 1. User Authentication and Authorization
-2. Community-based Learning
-3. Study Material Management
-4. Educational Blogging
-5. Real-time Chat System
-6. File Upload and Management
-7. AI Integration for Enhanced Learning
-8. Responsive Design
+2. **Welcome Email Notifications** - Automated welcome emails for new users
+3. Community-based Learning
+4. Study Material Management
+5. Educational Blogging
+6. Real-time Chat System
+7. File Upload and Management
+8. AI Integration for Enhanced Learning
+9. Responsive Design
+
+## Email System
+
+### Welcome Email Feature
+- **Automated welcome emails** sent to newly registered users
+- **Beautiful HTML email templates** with modern styling
+- **Customizable content** including features list and call-to-action
+- **Non-blocking email sending** - doesn't affect registration speed
+- **Error handling** with detailed logging
+
+### Email Setup
+See `backend/EMAIL_SETUP.md` for detailed setup instructions.
+
+### Email Template Features
+- Responsive HTML design
+- Welcome badge display
+- Feature highlights
+- Call-to-action button
+- Professional styling
 
 ## Blog System Features
 
@@ -162,4 +184,11 @@ Create a `.env` file in the backend directory with:
 MONGO_URI=your_mongodb_uri
 JWT_SECRET=your_jwt_secret
 PORT=5000
-``` 
+
+# Email Configuration (for welcome emails)
+EMAIL_USER=your-email@gmail.com
+EMAIL_PASSWORD=your-app-password
+FRONTEND_URL=http://localhost:3000
+```
+
+**Note**: For email functionality, you'll need to set up Gmail app passwords. See `backend/EMAIL_SETUP.md` for detailed instructions. 

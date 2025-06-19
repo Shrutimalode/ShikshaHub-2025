@@ -442,14 +442,10 @@ exports.searchBlogs = async (req, res) => {
       return res.status(403).json({ message: 'You are not a member of this community' });
     }
 
-    // Build query with permissions
+    // Build query with permissions and tag search
     let query = { 
       community: communityId,
-      $or: [
-        { title: { $regex: keyword, $options: 'i' } },
-        { content: { $regex: keyword, $options: 'i' } },
-        { tags: { $regex: keyword, $options: 'i' } }
-      ]
+      tags: { $regex: keyword, $options: 'i' }
     };
 
     // Filter by permissions
