@@ -11,7 +11,7 @@ const CommunitySidePanel = ({ communityId, isAdmin, onDeleteCommunity, joinCode,
   const handleLeaveCommunity = async () => {
     setLeaving(true);
     try {
-      await axios.post(`/api/communities/${communityId}/leave`);
+      await axios.post(`/communities/${communityId}/leave`);
       navigate('/dashboard');
     } catch (error) {
       alert(error.response?.data?.message || 'Failed to leave community');

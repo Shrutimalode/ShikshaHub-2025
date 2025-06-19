@@ -44,7 +44,7 @@ const CreateCommunity = () => {
       }
 
       // Create community
-      const res = await api.post('/api/communities', formData);
+      const res = await api.post('/communities', formData);
       
       // Redirect to the new community
       navigate(`/communities/${res.data._id}`);
