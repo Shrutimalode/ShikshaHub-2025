@@ -18,7 +18,8 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: 'https://shikshahub-community-frontend.onrender.com',
+  origin: 'https://shikshahub-community.onrender.com',
+  
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));

@@ -10,16 +10,19 @@ export const useAuth = () => useContext(AuthContext);
 // Auth provider component
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem('token'));
+  const [token, setToken] = useState(() => {
+    const userInfo = localStorage.getItem('userInfo');
+    return userInfo ? JSON.parse(userInfo).token : null;
+  });
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
 
   // Set axios default headers
   useEffect(() => {
     if (token) {
-      api.defaults.headers.common['x-auth-token'] = token;
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     } else {
-      delete api.defaults.headers.common['x-auth-token'];
+      delete api.defaults.headers.common['Authorization'];
     }
   }, [token]);
 
@@ -36,7 +39,7 @@ export const AuthProvider = ({ children }) => {
           setIsAuthenticated(true);
         } catch (error) {
           console.error('Error loading user:', error);
-          localStorage.removeItem('token');
+          localStorage.removeItem('userInfo');
           setToken(null);
           setUser(null);
           setIsAuthenticated(false);
@@ -52,10 +55,11 @@ export const AuthProvider = ({ children }) => {
   const register = async (formData) => {
     try {
       const res = await api.post('/api/auth/register', formData);
-      
-      localStorage.setItem('token', res.data.token);
+
+      // ✅ Save token and user info together
+      localStorage.setItem('userInfo', JSON.stringify(res.data));
       setToken(res.data.token);
-      
+
       return {
         success: true,
         data: res.data
@@ -74,11 +78,11 @@ export const AuthProvider = ({ children }) => {
       console.log('Login attempt:', { email: formData.email, role: formData.role });
       const res = await api.post('/api/auth/login', formData);
       console.log('Login successful:', res.data);
-      
-      localStorage.setItem('userInfo', JSON.stringify(res.data)); // ✅ Save full user object with token
-      setToken(res.data.token); // ✅ Sets token in context (optional but useful)
-      
-      
+
+      // ✅ Save token and user info together
+      localStorage.setItem('userInfo', JSON.stringify(res.data));
+      setToken(res.data.token);
+
       return {
         success: true,
         data: res.data
@@ -94,11 +98,11 @@ export const AuthProvider = ({ children }) => {
 
   // Logout user
   const logout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('userInfo');
     setToken(null);
     setUser(null);
     setIsAuthenticated(false);
-    delete api.defaults.headers.common['x-auth-token'];
+    delete api.defaults.headers.common['Authorization'];
   };
 
   return (
@@ -116,4 +120,4 @@ export const AuthProvider = ({ children }) => {
       {children}
     </AuthContext.Provider>
   );
-}; 
+};
