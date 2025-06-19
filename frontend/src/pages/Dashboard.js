@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Form, InputGroup, Spinner, Alert, Badge, Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api';
 import { useAuth } from '../contexts/AuthContext';
 import DashboardSidePanel from '../components/DashboardSidePanel';
 
@@ -25,15 +25,15 @@ const Dashboard = () => {
     const fetchCommunities = async () => {
       try {
         console.log('Fetching communities, current user:', user);
-        const res = await axios.get('/api/communities');
+        const res = await api.get('/communities');
         
         // Fetch blogs and materials for each community
         const communitiesWithCounts = await Promise.all(
           res.data.map(async (community) => {
             try {
               const [blogsRes, materialsRes] = await Promise.all([
-                axios.get(`/api/blogs/community/${community._id}`),
-                axios.get(`/api/materials/community/${community._id}`)
+                api.get(`/blogs/community/${community._id}`),
+                api.get(`/materials/community/${community._id}`)
               ]);
               
               return {
@@ -103,7 +103,7 @@ const Dashboard = () => {
     setJoinSuccess('');
 
     try {
-      const res = await axios.post('/api/communities/join', { joinCode });
+      const res = await api.post('/communities/join', { joinCode });
       
       // Add the newly joined community to the lists
       const newCommunity = res.data.community;
@@ -245,29 +245,31 @@ const Dashboard = () => {
 
                   <div className="communities-grid">
                     {filteredCommunities.map(community => (
-                      <Card key={community._id} className="mb-3">
+                      <Card key={community?._id || Math.random()} className="mb-3">
                         <Card.Body>
                           <div className="d-flex justify-content-between align-items-start">
                             <div>
-                              <Card.Title>{community.name}</Card.Title>
-                              <Card.Text>{community.description}</Card.Text>
+                              <Card.Title>{community?.name || 'No Name'}</Card.Title>
+                              <Card.Text>{community?.description || 'No Description'}</Card.Text>
                               <div className="mb-2">
                                 <Badge bg="secondary" className="me-2">
-                                  {(community.teachers?.length || 0) + (community.students?.length || 0) + 1} Members
+                                  {(community?.teachers?.length || 0) + (community?.students?.length || 0) + 1} Members
                                 </Badge>
                                 <Badge bg="info" className="me-2">
-                                  {community.blogs?.length || 0} Blogs
+                                  {community?.blogs?.length || 0} Blogs
                                 </Badge>
                                 <Badge bg="primary">
-                                  {community.materials?.length || 0} Materials
+                                  {community?.materials?.length || 0} Materials
                                 </Badge>
                               </div>
                             </div>
-                            <Link to={`/communities/${community._id}`}>
-                              <Button variant="outline-primary" size="sm">
-                                View Community
-                              </Button>
-                            </Link>
+                            {community?._id && (
+                              <Link to={`/communities/${community._id}`}>
+                                <Button variant="outline-primary" size="sm">
+                                  View Community
+                                </Button>
+                              </Link>
+                            )}
                           </div>
                         </Card.Body>
                       </Card>
