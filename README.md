@@ -179,16 +179,45 @@ docker-compose up --build
 ```
 
 ## Environment Variables
-Create a `.env` file in the backend directory with:
+
+### Backend (.env in backend directory)
+Create a `.env` file in the `backend` directory with the following variables:
+
 ```
-MONGO_URI=your_mongodb_uri
+# Database Configuration
+MONGODB_URI=your_mongodb_uri   # Used by backend/config/database.js
+MONGO_URI=your_mongodb_uri     # Used by backend/server.js (either is accepted)
+
+# JWT Configuration
 JWT_SECRET=your_jwt_secret
-PORT=5000
 
 # Email Configuration (for welcome emails)
 EMAIL_USER=your-email@gmail.com
 EMAIL_PASSWORD=your-app-password
+EMAIL_DEBUG=true               # Optional: set to true for verbose email logs
+
+# Frontend URL (for email links)
 FRONTEND_URL=http://localhost:3000
+
+# AI Integration (Gemini API)
+GEMINI_API_KEY=your_gemini_api_key
+
+# Server Configuration
+PORT=5000
+NODE_ENV=development
 ```
 
-**Note**: For email functionality, you'll need to set up Gmail app passwords. See `backend/EMAIL_SETUP.md` for detailed instructions. 
+- For email functionality, you must use an app password (not your regular Gmail password). See `backend/EMAIL_SETUP.md` for details.
+- Both `MONGODB_URI` and `MONGO_URI` are supported for MongoDB connection.
+- `GEMINI_API_KEY` is required for AI-powered blog summarization and chat features.
+
+### Frontend (.env in frontend directory)
+Create a `.env` file in the `frontend` directory if you want to override the default API URL:
+
+```
+REACT_APP_API_URL=http://localhost:5000/api
+```
+
+- By default, the frontend uses the deployed backend URL. Set this variable to use a local or custom backend during development.
+
+--- 

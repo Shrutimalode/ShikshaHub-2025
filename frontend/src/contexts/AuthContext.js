@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
     const loadUser = async () => {
       if (token) {
         try {
-          const res = await api.get('/api/auth/me');
+          const res = await api.get('/auth/me');
           setUser({
             ...res.data,
             id: res.data._id
@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }) => {
   // Register user
   const register = async (formData) => {
     try {
-      const res = await api.post('/api/auth/register', formData);
+      const res = await api.post('/auth/register', formData);
 
       // ✅ Save token and user info together
       localStorage.setItem('userInfo', JSON.stringify(res.data));
@@ -76,7 +76,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (formData) => {
     try {
       console.log('Login attempt:', { email: formData.email, role: formData.role });
-      const res = await api.post('/api/auth/login', formData);
+      const res = await api.post('/auth/login', formData);
       console.log('Login successful:', res.data);
 
       // ✅ Save token and user info together
