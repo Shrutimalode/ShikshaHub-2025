@@ -16,15 +16,28 @@ dotenv.config();
 // Create Express app
 const app = express();
 
-// Middleware
+// CORS Configuration
+const allowedOrigins = [
+  'https://shikshahub.onrender.com',
+  'http://localhost:3000'
+];
+
 app.use(cors({
-  origin:
-    'https://shikshahub.onrender.com',
-      
-  
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
+  origin: allowedOrigins,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  optionsSuccessStatus: 200
 }));
+
+app.options('*', cors()); // Preflight for all routes
+
+// Headers middleware
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
