@@ -394,17 +394,6 @@ const CommunityDetails = () => {
     }
   };
 
-  // Check if user is a member of this community
-  const isMember = community && user && (
-    (isAdmin) || 
-    (community.teachers && community.teachers.some(teacher => 
-      teacher._id === user.id || teacher._id === user._id
-    )) || 
-    (community.students && community.students.some(student => 
-      student._id === user.id || student._id === user._id
-    ))
-  );
-
   // Check if user can delete a material
   const canDeleteMaterial = (material) => {
     return isAdmin || (user && (material.author._id === user.id || material.author._id === user._id));
