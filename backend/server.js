@@ -19,7 +19,7 @@ const app = express();
 // Middleware
 app.use(cors({
   origin: [
-    'https://shikshahub.onrender.com/api',
+    'https://zippy-quokka-b84568.netlify.app',
     'http://localhost:3000'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
