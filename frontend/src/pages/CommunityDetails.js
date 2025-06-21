@@ -151,8 +151,8 @@ const CommunityDetails = () => {
     const fetchJoinRequests = async () => {
       if (!community || !user) return;
       
-      const isAdmin = community.admin._id === user.id || community.admin._id === user._id;
-      if (!isAdmin) return;
+      const isAdminUser = community.admin._id === user.id || community.admin._id === user._id;
+      if (!isAdminUser) return;
       
       setLoadingRequests(true);
       
@@ -394,9 +394,6 @@ const CommunityDetails = () => {
     }
   };
 
-  // Check if user is admin of this community
-  const isAdmin = community && user && (community.admin._id === user.id || community.admin._id === user._id);
-  
   // Check if user is a member of this community
   const isMember = community && user && (
     (isAdmin) || 
