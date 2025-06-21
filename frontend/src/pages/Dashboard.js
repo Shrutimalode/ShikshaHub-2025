@@ -3,7 +3,7 @@ import { Container, Row, Col, Card, Button, Form, InputGroup, Spinner, Alert, Ba
 import { Link } from 'react-router-dom';
 import api from '../api';
 import { useAuth } from '../contexts/AuthContext';
-import DashboardSidePanel from '../components/DashboardSidePanel';
+
 
 const Dashboard = () => {
   const { user } = useAuth();
