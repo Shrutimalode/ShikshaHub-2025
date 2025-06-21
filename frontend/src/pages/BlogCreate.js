@@ -25,7 +25,7 @@ const BlogCreate = () => {
     setError('');
     setSuccess('');
     try {
-      const res = await api.post('/api/blogs', {
+      await api.post('/api/blogs', {
         title: form.title,
         content: form.content,
         tags: form.tags,

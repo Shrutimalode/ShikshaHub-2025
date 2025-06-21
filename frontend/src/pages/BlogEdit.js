@@ -52,7 +52,7 @@ const BlogEdit = () => {
     setSubmitting(true);
     
     try {
-      const res = await api.put(`/api/blogs/${blogId}`, formData);
+      await api.put(`/api/blogs/${blogId}`, formData);
       navigate(`/communities/${communityId}/blogs/${blogId}`);
     } catch (error) {
       console.error('Error updating blog post:', error);

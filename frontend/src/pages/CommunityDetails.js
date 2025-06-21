@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import { Container, Row, Col, Card, Button, Tab, Nav, Form, Badge, Alert, Spinner, ListGroup, Modal, InputGroup } from 'react-bootstrap';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Container, Row, Col, Card, Button, Tab, Nav, Form, Badge, Alert, Spinner, ListGroup, Modal } from 'react-bootstrap';
 import api from '../api';
 import { useAuth } from '../contexts/AuthContext';
 import BlogList from '../components/BlogList';
-import BlogForm from '../components/BlogForm';
 import CommunitySidePanel from '../components/CommunitySidePanel';
 
 const CommunityDetails = () => {

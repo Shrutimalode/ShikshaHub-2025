@@ -90,7 +90,7 @@ const BlogView = () => {
   // Handle blog resubmission
   const handleResubmit = async () => {
     try {
-      const res = await api.put(`/api/blogs/resubmit/${blogId}`);
+      await api.put(`/api/blogs/resubmit/${blogId}`);
       
       // Update blog status
       setBlog({

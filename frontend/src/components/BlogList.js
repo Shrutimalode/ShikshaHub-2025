@@ -140,11 +140,6 @@ const BlogList = ({ blogs, communityId, isAdmin, onDelete, onReview }) => {
     return null;
   };
 
-  const canEdit = (blog) => {
-    // Only allow editing if user is the author AND blog is not pending
-    return blog.author._id === user.id && blog.status !== 'pending';
-  };
-
   const canReview = (blog) => {
     // Admin can review any blog
     if (isAdmin) return true;
