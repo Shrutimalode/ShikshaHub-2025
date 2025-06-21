@@ -467,6 +467,29 @@ const CommunityDetails = () => {
     return eventDateTime > new Date();
   });
 
+  // Add this function to handle material deletion
+  const handleDeleteMaterial = async (materialId) => {
+    if (window.confirm('Are you sure you want to delete this material?')) {
+      try {
+        await api.delete(`/materials/${materialId}`);
+        setMaterials(materials.filter(material => material._id !== materialId));
+      } catch (error) {
+        alert('Failed to delete material. Please try again.');
+        console.error('Error deleting material:', error);
+      }
+    }
+  };
+
+  // Add this function to handle upload form changes
+  const handleUploadChange = (e) => {
+    const { name, value, files } = e.target;
+    if (name === 'file') {
+      setUploadForm(prev => ({ ...prev, file: files[0] }));
+    } else {
+      setUploadForm(prev => ({ ...prev, [name]: value }));
+    }
+  };
+
   // Render loading state
   if (loading) {
     return (
